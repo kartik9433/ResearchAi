@@ -1,0 +1,10 @@
+.user-message {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 20px;
+  margin: 10px 0;
+  max-width: 70%;
+  word-wrap: break-word;
+}
