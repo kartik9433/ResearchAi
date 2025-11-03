@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
+
 @Service
 public class ChatbotService {
 
@@ -18,7 +20,9 @@ public class ChatbotService {
     @Autowired
     private ChatbotRepository chatbotRepository;
 
-    private final WebClient webClient = WebClient.create("https://generativelanguage.googleapis.com/v1beta/models");
+    private final WebClient webClient = WebClient.builder()
+            .baseUrl("https://generativelanguage.googleapis.com/v1beta/models")
+            .build();
 
     public String Response(String userMessage) {
         try {
@@ -29,17 +33,20 @@ public class ChatbotService {
                                     .put("parts", new JSONArray()
                                             .put(new JSONObject()
                                                     .put("text", userMessage)))));
+                  System.out.print(requestBody);
+            System.out.println("➡️ Gemini Request Body:\n" + requestBody.toString(2));
 
             String responseString = webClient.post()
-                    .uri("/gemini-2.5-flash:generateContent")
-                    .header("x-goog-api-key", apiKey)
+                    .uri("/gemini-2.5-pro:generateContent")
                     .header("Content-Type", "application/json")
+                    .header("x-goog-api-key", apiKey)
                     .bodyValue(requestBody.toString())
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
 
-            System.out.println("Raw Gemini API Response: " + responseString);
+
+            System.out.println("✅ Raw Gemini API Response:\n" + responseString);
 
             if (responseString == null || responseString.isEmpty()) {
                 return "Empty response from Gemini API.";
@@ -52,11 +59,7 @@ public class ChatbotService {
                 return "Gemini API Error: " + error.optString("message", "Unknown error");
             }
 
-            if (!response.has("candidates")) {
-                return "Unexpected response format (no 'candidates' key): " + response;
-            }
-
-            String botresponse = response
+            String botResponse = response
                     .getJSONArray("candidates")
                     .getJSONObject(0)
                     .getJSONObject("content")
@@ -66,14 +69,18 @@ public class ChatbotService {
 
             Message message = new Message();
             message.setUserMessage(userMessage);
-            message.setBotResponse(botresponse);
+            message.setBotResponse(botResponse);
             chatbotRepository.save(message);
 
-            return botresponse;
+            return botResponse;
 
         } catch (Exception e) {
             e.printStackTrace();
             return "Error: " + e.getMessage();
         }
+    }
+
+    public List<Message> getAll() {
+         return chatbotRepository.findAll();
     }
 }
