@@ -18,18 +18,21 @@ public class ChatbotService {
     @Autowired
     private ChatbotRepository chatbotRepository;
 
-    private final WebClient webClient = WebClient.create("https://generativelanguage.googleapis.com/v1beta/models");
+    private final WebClient webClient = WebClient.builder()
+            .baseUrl("https://generativelanguage.googleapis.com/v1beta/models")
+            .build();
 
     public String Response(String userMessage) {
         try {
+            // ✅ Match Google's official format exactly
             JSONObject requestBody = new JSONObject()
                     .put("contents", new JSONArray()
                             .put(new JSONObject()
                                     .put("role", "user")
                                     .put("parts", new JSONArray()
-                                            .put(new JSONObject()
-                                                    .put("text", userMessage)))));
+                                            .put(new JSONObject().put("text", userMessage)))));
 
+            // ✅ API key in header (as per cURL)
             String responseString = webClient.post()
                     .uri("/gemini-2.5-flash:generateContent")
                     .header("x-goog-api-key", apiKey)
@@ -52,11 +55,7 @@ public class ChatbotService {
                 return "Gemini API Error: " + error.optString("message", "Unknown error");
             }
 
-            if (!response.has("candidates")) {
-                return "Unexpected response format (no 'candidates' key): " + response;
-            }
-
-            String botresponse = response
+            String botResponse = response
                     .getJSONArray("candidates")
                     .getJSONObject(0)
                     .getJSONObject("content")
@@ -64,12 +63,13 @@ public class ChatbotService {
                     .getJSONObject(0)
                     .getString("text");
 
+            // ✅ Save chat in DB
             Message message = new Message();
             message.setUserMessage(userMessage);
-            message.setBotResponse(botresponse);
+            message.setBotResponse(botResponse);
             chatbotRepository.save(message);
 
-            return botresponse;
+            return botResponse;
 
         } catch (Exception e) {
             e.printStackTrace();
