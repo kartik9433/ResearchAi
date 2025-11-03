@@ -23,8 +23,8 @@ public class ChatbotController {
       }
 
       @GetMapping("/getHistory")
-    public List<Message> getAll(){
-            return  chatbotService.getAll();
+      public List<Message> getAll(){
+          return  chatbotService.getAll();
       }
 
 }
