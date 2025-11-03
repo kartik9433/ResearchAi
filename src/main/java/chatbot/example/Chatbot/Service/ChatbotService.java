@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
+
 @Service
 public class ChatbotService {
 
@@ -24,25 +26,27 @@ public class ChatbotService {
 
     public String Response(String userMessage) {
         try {
-            // ✅ Match Google's official format exactly
             JSONObject requestBody = new JSONObject()
                     .put("contents", new JSONArray()
                             .put(new JSONObject()
                                     .put("role", "user")
                                     .put("parts", new JSONArray()
-                                            .put(new JSONObject().put("text", userMessage)))));
+                                            .put(new JSONObject()
+                                                    .put("text", userMessage)))));
+                  System.out.print(requestBody);
+            System.out.println("➡️ Gemini Request Body:\n" + requestBody.toString(2));
 
-            // ✅ API key in header (as per cURL)
             String responseString = webClient.post()
-                    .uri("/gemini-2.5-flash:generateContent")
-                    .header("x-goog-api-key", apiKey)
+                    .uri("/gemini-2.5-pro:generateContent")
                     .header("Content-Type", "application/json")
+                    .header("x-goog-api-key", apiKey)
                     .bodyValue(requestBody.toString())
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
 
-            System.out.println("Raw Gemini API Response: " + responseString);
+
+            System.out.println("✅ Raw Gemini API Response:\n" + responseString);
 
             if (responseString == null || responseString.isEmpty()) {
                 return "Empty response from Gemini API.";
@@ -63,7 +67,6 @@ public class ChatbotService {
                     .getJSONObject(0)
                     .getString("text");
 
-            // ✅ Save chat in DB
             Message message = new Message();
             message.setUserMessage(userMessage);
             message.setBotResponse(botResponse);
@@ -75,5 +78,9 @@ public class ChatbotService {
             e.printStackTrace();
             return "Error: " + e.getMessage();
         }
+    }
+
+    public List<Message> getAll() {
+         return chatbotRepository.findAll();
     }
 }

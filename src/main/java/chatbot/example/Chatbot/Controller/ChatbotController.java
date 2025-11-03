@@ -1,9 +1,11 @@
 package chatbot.example.Chatbot.Controller;
 
+import chatbot.example.Chatbot.Model.Message;
 import chatbot.example.Chatbot.Service.ChatbotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,4 +21,10 @@ public class ChatbotController {
             String userMessage = payload.get("userMessage");
             return chatbotService.Response(userMessage);
       }
+
+      @GetMapping("/getHistory")
+    public List<Message> getAll(){
+            return  chatbotService.getAll();
+      }
+
 }
