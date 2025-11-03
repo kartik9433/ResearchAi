@@ -83,4 +83,9 @@ public class ChatbotService {
     public List<Message> getAll() {
          return chatbotRepository.findAll();
     }
+
+    public Message getMessageById(Long id) {
+        return chatbotRepository.findById(id).orElseThrow(()->new RuntimeException("user not found"));
+    }
+
 }

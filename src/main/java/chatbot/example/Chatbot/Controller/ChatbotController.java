@@ -27,4 +27,9 @@ public class ChatbotController {
             return  chatbotService.getAll();
       }
 
+      @GetMapping("/getByID/{id}")
+    public Message getMessageById(@PathVariable Long id){
+          return chatbotService.getMessageById(id);
+      }
+
 }
