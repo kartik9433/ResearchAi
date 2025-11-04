@@ -32,4 +32,14 @@ public class ChatbotController {
           return chatbotService.getMessageById(id);
       }
 
+      @DeleteMapping("/Delete/History")
+      public void DeleteHistory(){
+            chatbotService.DeleteHistory();
+      }
+
+      @DeleteMapping("/Delete")
+    public  void DeleteById(@RequestParam long Id){
+             chatbotService.DeleteById(Id);
+      }
+
 }
