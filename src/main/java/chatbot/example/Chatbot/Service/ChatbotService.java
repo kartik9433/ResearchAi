@@ -37,7 +37,7 @@ public class ChatbotService {
             System.out.println("➡️ Gemini Request Body:\n" + requestBody.toString(2));
 
             String responseString = webClient.post()
-                    .uri("/gemini-2.5-pro:generateContent")
+                    .uri("/gemini-2.5-flash:generateContent")
                     .header("Content-Type", "application/json")
                     .header("x-goog-api-key", apiKey)
                     .bodyValue(requestBody.toString())
@@ -84,4 +84,19 @@ public class ChatbotService {
          return chatbotRepository.findAll();
     }
 
+<<<<<<< HEAD
+=======
+    public Message getMessageById(Long id) {
+        return chatbotRepository.findById(id).orElseThrow(()->new RuntimeException("user not found"));
+    }
+
+
+    public void DeleteHistory() {
+        chatbotRepository.deleteAll();
+    }
+
+    public void DeleteById(Long id) {
+          chatbotRepository.deleteById(id);
+    }
+>>>>>>> c731465250abe7635f5d91ed216061c79e4f84e1
 }
