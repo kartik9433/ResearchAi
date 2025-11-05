@@ -2,6 +2,7 @@ package chatbot.example.Chatbot.Controller;
 
 import chatbot.example.Chatbot.Model.Message;
 import chatbot.example.Chatbot.Service.ChatbotService;
+import chatbot.example.Chatbot.Service.WikipediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,8 @@ public class ChatbotController {
 
       @Autowired
       private ChatbotService chatbotService;
+      @Autowired
+      private WikipediaService wikipediaService;
 
       @PostMapping("/ask")
       public String askChatbot(@RequestBody Map<String, String> payload) {
@@ -42,4 +45,8 @@ public class ChatbotController {
              chatbotService.DeleteById(Id);
       }
 
+      @GetMapping("/wiki")
+      public String wikipedia(@RequestParam  String query){
+          return  wikipediaService.response(query);
+      }
 }
