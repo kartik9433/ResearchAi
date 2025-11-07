@@ -25,7 +25,7 @@ public class ChatbotController {
 
       @Autowired
       private OpenAiService openAiService;
-
+         //chatgpt response
       @PostMapping("/ask")
       public String askChatbot(@RequestBody Map<String, String> payload) {
             String userMessage = payload.get("userMessage");
@@ -52,16 +52,19 @@ public class ChatbotController {
              chatbotService.DeleteById(Id);
       }
 
+      //wikipedia response
       @GetMapping("/wiki")
       public String wikipedia(@RequestParam  String query){
           return  wikipediaService.response(query);
       }
 
+     //deepSeek response
       @PostMapping("/deepSeek")
     public  String deepSeek(@RequestParam String userMessage){
           return deepSeekService.deepSeek(userMessage);
       }
 
+      //open ai response
       @PostMapping("/openai")
     public String openai (@RequestParam String userMessage){
           return  openAiService.response(userMessage);

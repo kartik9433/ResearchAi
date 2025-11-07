@@ -1,0 +1,8 @@
+C:\hibernate\Chatbot\src\main\java\chatbot\example\Chatbot\ChatbotApplication.java
+C:\hibernate\Chatbot\src\main\java\chatbot\example\Chatbot\Controller\ChatbotController.java
+C:\hibernate\Chatbot\src\main\java\chatbot\example\Chatbot\Model\Message.java
+C:\hibernate\Chatbot\src\main\java\chatbot\example\Chatbot\Repository\ChatbotRepository.java
+C:\hibernate\Chatbot\src\main\java\chatbot\example\Chatbot\Service\ChatbotService.java
+C:\hibernate\Chatbot\src\main\java\chatbot\example\Chatbot\Service\DeepSeekService.java
+C:\hibernate\Chatbot\src\main\java\chatbot\example\Chatbot\Service\OpenAiService.java
+C:\hibernate\Chatbot\src\main\java\chatbot\example\Chatbot\Service\WikipediaService.java

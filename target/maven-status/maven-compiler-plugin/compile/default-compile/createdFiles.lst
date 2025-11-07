@@ -1,0 +1,8 @@
+chatbot\example\Chatbot\Service\WikipediaService.class
+chatbot\example\Chatbot\Model\Message.class
+chatbot\example\Chatbot\Service\ChatbotService.class
+chatbot\example\Chatbot\Service\OpenAiService.class
+chatbot\example\Chatbot\Service\DeepSeekService.class
+chatbot\example\Chatbot\Controller\ChatbotController.class
+chatbot\example\Chatbot\ChatbotApplication.class
+chatbot\example\Chatbot\Repository\ChatbotRepository.class
