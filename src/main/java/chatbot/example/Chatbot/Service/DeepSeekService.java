@@ -7,19 +7,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
-public class OpenAiService {
+public class DeepSeekService {
 
-    @Value("${openai.api.key}")
+    @Value("${deepseek.api.key}")
     private String apiKey;
 
     private final WebClient webClient = WebClient.builder()
-            .baseUrl("https://api.openai.com")
+            .baseUrl("https://api.deepseek.com")
             .build();
 
-    public String openAi(String userMessage) {
+    public String deepSeek(String userMessage) {
         try {
             JSONObject requestBody = new JSONObject();
-            requestBody.put("model", "gpt-3.5-turbo");
+            requestBody.put("model", "deepseek-chat");
             requestBody.put("stream", false);
 
             JSONArray messages = new JSONArray();
@@ -31,7 +31,7 @@ public class OpenAiService {
                     .put("content", userMessage));
             requestBody.put("messages", messages);
 
-            System.out.println("➡️ OpenAi Request Body:\n" + requestBody.toString(2));
+            System.out.println("➡️ DeepSeek Request Body:\n" + requestBody.toString(2));
 
             String responseString = webClient.post()
                     .uri("/chat/completions")
@@ -42,24 +42,25 @@ public class OpenAiService {
                     .bodyToMono(String.class)
                     .block();
 
-            System.out.println("✅ Raw OpenAi Response:\n" + responseString);
+            System.out.println("✅ Raw DeepSeek Response:\n" + responseString);
 
             JSONObject response = new JSONObject(responseString);
             JSONArray choices = response.getJSONArray("choices");
 
             if (choices.isEmpty()) {
-                return "No response from OpenAi.";
+                return "No response from DeepSeek.";
             }
 
-            return choices
+            String botResponse = choices
                     .getJSONObject(0)
                     .getJSONObject("message")
                     .getString("content");
+
+            return botResponse;
 
         } catch (Exception e) {
             e.printStackTrace();
             return "Error occurred: " + e.getMessage();
         }
     }
-
 }

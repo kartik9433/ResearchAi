@@ -39,7 +39,7 @@ public class ChatbotService {
             String responseString = webClient.post()
                     .uri("/gemini-2.5-flash:generateContent")
                     .header("Content-Type", "application/json")
-                    .header("x-goog-api-key", apiKey)
+                    .header("x-google-api-key", apiKey)
                     .bodyValue(requestBody.toString())
                     .retrieve()
                     .bodyToMono(String.class)

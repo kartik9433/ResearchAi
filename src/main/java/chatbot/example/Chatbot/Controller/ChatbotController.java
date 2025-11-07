@@ -2,6 +2,8 @@ package chatbot.example.Chatbot.Controller;
 
 import chatbot.example.Chatbot.Model.Message;
 import chatbot.example.Chatbot.Service.ChatbotService;
+import chatbot.example.Chatbot.Service.DeepSeekService;
+import chatbot.example.Chatbot.Service.OpenAiService;
 import chatbot.example.Chatbot.Service.WikipediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,10 @@ public class ChatbotController {
       private ChatbotService chatbotService;
       @Autowired
       private WikipediaService wikipediaService;
+      @Autowired
+      private DeepSeekService deepSeekService;
+      @Autowired
+      private OpenAiService openAiService;
 
       @PostMapping("/ask")
       public String askChatbot(@RequestBody Map<String, String> payload) {
@@ -49,4 +55,14 @@ public class ChatbotController {
       public String wikipedia(@RequestParam  String query){
           return  wikipediaService.response(query);
       }
+
+      @PostMapping("/deepSeek")
+    public  String deepSeek(@RequestParam String userMessage){
+          return deepSeekService.deepSeek(userMessage);
+      }
+
+    @PostMapping("/openai")
+    public  String openAi(@RequestParam String userMessage){
+        return openAiService.openAi(userMessage);
+    }
 }
