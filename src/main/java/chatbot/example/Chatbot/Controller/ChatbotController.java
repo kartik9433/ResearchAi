@@ -25,7 +25,7 @@ public class ChatbotController {
 
       @Autowired
       private OpenAiService openAiService;
-         //chatgpt response
+         //gemini response
       @PostMapping("/ask")
       public String askChatbot(@RequestBody Map<String, String> payload) {
             String userMessage = payload.get("userMessage");
