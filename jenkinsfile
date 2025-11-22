@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'MAVEN_HOME'
+        jdk 'JAVA_HOME'
+    }
+
+    stages {
+        stage('Clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/kartik9433/ResearchAi.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                withMaven(maven: 'MAVEN_HOME') {
+                    bat 'mvn clean package'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                withMaven(maven: 'MAVEN_HOME') {
+                    bat 'mvn test'
+                }
+            }
+        }
+
+        stage('Post Build') {
+            steps {
+                echo "Build Successful!"
+            }
+        }
+    }
+}
